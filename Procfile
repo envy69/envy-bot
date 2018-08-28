@@ -1,1 +1,1 @@
-worker: node index.js envybot
+worker: node index.js

@@ -9,7 +9,7 @@ let coins = require("./coins.json");
 
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online`);
-    bot.user.setActivity("envy is best");
+    bot.user.setActivity("im cooler than you");
 });
 
 bot.on("message", async message => {

@@ -1,0 +1,2 @@
+# envy-bot
+discord bot

@@ -10,7 +10,7 @@ let coins = require("./coins.json");
 
 bot.on("ready", async () => {
     console.log(`${bot.user.username} is online`);
-    bot.user.setActivity("im cooler than you");
+    bot.user.setActivity("envy is best");
 });
 
 bot.on("message", async message => {
@@ -53,11 +53,6 @@ bot.on("message", async message => {
     if(cmd === `${prefix}hello`){
         return message.reply("hi you faggot");
     }
-    
-    if(cmd === `${prefix}qepler`){
-        return message.reply("https://hijiribe.donmai.us/data/sample/sample-44f8e4fe295ef4e8bcaae9639e16458a.jpg");
-    }    
-        
 
     if(cmd === `${prefix}kick`){
 
@@ -166,6 +161,44 @@ bot.on("message", async message => {
           message.reply("you rolled a " + roll)
       }
 
+      let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+  if(!tomute) return message.reply("Couldn't find user.");
+  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
+  let muterole = message.guild.roles.find(`name`, "muted");
+  //start of create role
+  if(!muterole){
+    try{
+      muterole = await message.guild.createRole({
+        name: "muted",
+        color: "#000000",
+        permissions:[]
+      })
+      message.guild.channels.forEach(async (channel, id) => {
+        await channel.overwritePermissions(muterole, {
+          SEND_MESSAGES: false,
+          ADD_REACTIONS: false
+        });
+      });
+    }catch(e){
+      console.log(e.stack);
+    }
+  }
+  //end of create role
+  let mutetime = args[1];
+  if(!mutetime) return message.reply("You didn't specify a time!");
+
+  await(tomute.addRole(muterole.id));
+  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
+
+  setTimeout(function(){
+    tomute.removeRole(muterole.id);
+    message.channel.send(`<@${tomute.id}> has been unmuted!`);
+  }, ms(mutetime));
+
+
+//end of module
+}
+
     if(cmd === `${prefix}serverinfo`){
 
         let sicon = message.guild.iconURL;
@@ -208,41 +241,7 @@ bot.on("message", async message => {
 
         return message.channel.send(botembed);
     }
-    
-let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-  if(!tomute) return message.reply("Couldn't find user.");
-  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
-  let muterole = message.guild.roles.find(`name`, "muted");
-  //start of create role
-  if(!muterole){
-    try{
-      muterole = await message.guild.createRole({
-        name: "muted",
-        color: "#000000",
-        permissions:[]
-      })
-      message.guild.channels.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muterole, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        });
-      });
-    }catch(e){
-      console.log(e.stack);
-    }
-  }
-  //end of create role
-  let mutetime = args[1];
-  if(!mutetime) return message.reply("You didn't specify a time!");
 
-  await(tomute.addRole(muterole.id));
-  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
-
-  setTimeout(function(){
-    tomute.removeRole(muterole.id);
-    message.channel.send(`<@${tomute.id}> has been unmuted!`);
-  }, ms(mutetime));
-    
 })
 
 bot.login(process.env.BOT_TOKEN);

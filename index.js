@@ -52,6 +52,11 @@ bot.on("message", async message => {
     if(cmd === `${prefix}hello`){
         return message.reply("hi you faggot");
     }
+    
+    if(cmd === `${prefix}qepler`){
+        return message.channel.reply("https://hijiribe.donmai.us/data/sample/sample-44f8e4fe295ef4e8bcaae9639e16458a.jpg");
+    }    
+        
 
     if(cmd === `${prefix}kick`){
 
